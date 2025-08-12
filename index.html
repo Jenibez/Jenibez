@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #0c0c0c 100%);
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="0.5" fill="%23ffffff" opacity="0.02"/><circle cx="80" cy="40" r="0.3" fill="%23ffffff" opacity="0.01"/><circle cx="40" cy="80" r="0.4" fill="%23ffffff" opacity="0.015"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 5rem;
+            padding: 3rem 0;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+        
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: 0.15rem;
+            margin-bottom: 1.5rem;
+            text-transform: none;
+            background: linear-gradient(135deg, #ffffff 0%, #d4af37 50%, #ffffff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            position: relative;
+        }
+        
+        .tagline {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            color: #b8b8b8;
+            font-weight: 300;
+            letter-spacing: 0.2rem;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin: 4rem 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 2.5rem 0;
+            background: rgba(212, 175, 55, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav a {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 400;
+            letter-spacing: 0.05rem;
+            text-transform: lowercase;
+            transition: all 0.4s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: #d4af37;
+            transform: translateY(-2px);
+        }
+        
+        .nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -8px;
+            left: 50%;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            transition: all 0.4s ease;
+            border-radius: 1px;
+        }
+        
+        .nav a:hover::after, .nav a.active::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+            margin-bottom: 3rem;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        
+        .work-item {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .work-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .work-item:hover::before {
+            left: 100%;
+        }
+        
+        .work-item:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.15);
+        }
+        
+        .work-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .work-item:hover .work-image {
+            transform: scale(1.05);
+        }
+        
+        .work-content {
+            padding: 2rem;
+        }
+        
+        .work-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #d4af37;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .work-genre {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .work-description {
+            font-family: 'Inter', sans-serif;
+            color: #c8c8c8;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Project Detail View */
+        .project-detail {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .project-detail.active {
+            display: block;
+        }
+        
+        .back-button {
+            color: #d4af37;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: #fff;
+            transform: translateX(-5px);
+        }
+        
+        .back-button::before {
+            content: '← ';
+            margin-right: 0.5rem;
+        }
+        
+        .project-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-genre {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+        
+        .project-image {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+        }
+        
+        .project-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .info-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+        }
+        
+        .info-section p, .info-section li {
+            font-family: 'Inter', sans-serif;
+            color: #c8c8c8;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-section li {
+            margin-bottom: 0.3rem;
+        }
+        
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #d0d0d0;
+            font-weight: 300;
+            position: relative;
+            padding: 2rem;
+            background: rgba(212, 175, 55, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .about-content::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: rgba(212, 175, 55, 0.3);
+            line-height: 1;
+        }
+        
+        .about-content::after {
+            content: '"';
+            position: absolute;
+            bottom: -30px;
+            right: 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: rgba(212, 175, 55, 0.3);
+            line-height: 1;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(212, 175, 55, 0.05);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+        }
+        
+        .contact-item:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .contact-item a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-item a:hover {
+            color: #d4af37;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .name {
+                font-size: 2.8rem;
+                letter-spacing: 0.1rem;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 2rem;
+                padding: 2rem 0;
+            }
+            
+            .nav a {
+                font-size: 1.2rem;
+            }
+            
+            .work-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .project-title {
+                font-size: 2.2rem;
+            }
+            
+            .project-info {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="name">Your Name Here</h1>
+            <p class="tagline">Creative Professional</p>
+        </div>
+        
+        <nav class="nav">
+            <a href="#" onclick="showSection('work', this)" class="nav-link">work</a>
+            <a href="#" onclick="showSection('about', this)" class="nav-link">about</a>
+            <a href="#" onclick="showSection('contact', this)" class="nav-link">contact</a>
+        </nav>
+        
+        <div id="work" class="section active">
+            <div class="work-grid">
+                <div class="work-item" onclick="showProject('project1')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+1" alt="Project 1" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title One</div>
+                        <div class="work-genre">Drama / Thriller</div>
+                        <div class="work-description">A compelling story about human nature and the choices we make when faced with impossible circumstances.</div>
+                    </div>
+                </div>
+                
+                <div class="work-item" onclick="showProject('project2')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+2" alt="Project 2" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title Two</div>
+                        <div class="work-genre">Horror / Psychological</div>
+                        <div class="work-description">An exploration of fear and memory in the confines of a family home that holds dark secrets.</div>
+                    </div>
+                </div>
+                
+                <div class="work-item" onclick="showProject('project3')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+3" alt="Project 3" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title Three</div>
+                        <div class="work-genre">Comedy / Drama</div>
+                        <div class="work-description">A heartwarming tale of unlikely friendships formed in the most unexpected places.</div>
+                    </div>
+                </div>
+                
+                <!-- Add 6 more projects following the same pattern -->
+                <div class="work-item" onclick="showProject('project4')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+4" alt="Project 4" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title Four</div>
+                        <div class="work-genre">Sci-Fi / Adventure</div>
+                        <div class="work-description">A futuristic journey through time and space, questioning what it means to be human.</div>
+                    </div>
+                </div>
+                
+                <div class="work-item" onclick="showProject('project5')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+5" alt="Project 5" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title Five</div>
+                        <div class="work-genre">Documentary</div>
+                        <div class="work-description">An intimate look at the lives of artists pushing boundaries in contemporary culture.</div>
+                    </div>
+                </div>
+                
+                <div class="work-item" onclick="showProject('project6')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+6" alt="Project 6" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title Six</div>
+                        <div class="work-genre">Romance / Drama</div>
+                        <div class="work-description">A love story that transcends time, exploring the connections that bind us across generations.</div>
+                    </div>
+                </div>
+                
+                <div class="work-item" onclick="showProject('project7')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+7" alt="Project 7" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title Seven</div>
+                        <div class="work-genre">Action / Thriller</div>
+                        <div class="work-description">High-stakes adventure through urban landscapes where every decision could be the last.</div>
+                    </div>
+                </div>
+                
+                <div class="work-item" onclick="showProject('project8')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+8" alt="Project 8" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title Eight</div>
+                        <div class="work-genre">Mystery / Crime</div>
+                        <div class="work-description">A detective story that unravels the dark underbelly of a seemingly perfect community.</div>
+                    </div>
+                </div>
+                
+                <div class="work-item" onclick="showProject('project9')">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/d4af37?text=Project+9" alt="Project 9" class="work-image">
+                    <div class="work-content">
+                        <div class="work-title">Project Title Nine</div>
+                        <div class="work-genre">Fantasy / Adventure</div>
+                        <div class="work-description">An epic quest through magical realms where heroes are forged and legends are born.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project Detail Views -->
+        <div id="project1" class="project-detail">
+            <a href="#" onclick="showSection('work', null)" class="back-button">Back to Work</a>
+            <div class="project-hero">
+                <h1 class="project-title">Project Title One</h1>
+                <p class="project-genre">Drama / Thriller</p>
+                <img src="https://via.placeholder.com/800x450/1a1a1a/d4af37?text=Hero+Image" alt="Project 1 Hero" class="project-image">
+            </div>
+            
+            <div class="project-info">
+                <div class="info-section">
+                    <h3>Creative Team</h3>
+                    <ul>
+                        <li><strong>Director</strong> - Your Name</li>
+                        <li><strong>Writer</strong> - Co-Writer Name</li>
+                        <li><strong>Producer</strong> - Producer Name</li>
+                        <li><strong>Cinematographer</strong> - DP Name</li>
+                        <li><strong>Editor</strong> - Editor Name</li>
+                        <li><strong>Composer</strong> - Composer Name</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Cast</h3>
+                    <ul>
+                        <li>Lead Actor Name</li>
+                        <li>Supporting Actor Name</li>
+                        <li>Character Actor Name</li>
+                        <li>Ensemble Cast Member</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Festivals & Awards</h3>
+                    <ul>
+                        <li>Sundance Film Festival, 2024</li>
+                        <li>SXSW Film Festival, 2024</li>
+                        <li>Toronto International Film Festival</li>
+                        <li><strong>Best Director</strong> - Film Festival Name</li>
+                        <li><strong>Audience Award</strong> - Festival Name</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Logline</h3>
+                    <p>A compelling logline that captures the essence of your story in one or two sentences, highlighting the main conflict and what makes this project unique and engaging for audiences.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Repeat project detail structure for projects 2-9 -->
+        
+        <div id="about" class="section">
+            <div class="about-content">
+                <p>I'm a creative professional passionate about bringing ideas to life through thoughtful design and innovative solutions.</p>
+                <br>
+                <p>With a background in [your field], I specialize in creating work that resonates with audiences and solves real problems. My approach combines technical skill with creative vision to deliver exceptional results.</p>
+                <br>
+                <p>When I'm not working, you'll find me exploring new creative outlets, staying current with industry trends, and continuously learning new skills to push the boundaries of what's possible.</p>
+            </div>
+        </div>
+        
+        <div id="contact" class="section">
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <a href="mailto:your.email@example.com">Email</a>
+                </div>
+                <div class="contact-item">
+                    <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+                </div>
+                <div class="contact-item">
+                    <a href="https://instagram.com/yourhandle" target="_blank">Instagram</a>
+                </div>
+                <div class="contact-item">
+                    <a href="tel:+1234567890">Phone</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Your Name. All rights reserved.</p>
+        </div>
+    </div>
+    
+    <script>
+        function showSection(sectionId, element) {
+            // Hide all sections and project details
+            const sections = document.querySelectorAll('.section, .project-detail');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show the selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to corresponding nav link if element provided
+            if (element) {
+                element.classList.add('active');
+            }
+        }
+        
+        function showProject(projectId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section, .project-detail');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show the selected project
+            document.getElementById(projectId).classList.add('active');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('work');
+        });
+    </script>
+</body>
+</html>
